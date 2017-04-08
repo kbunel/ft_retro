@@ -1,6 +1,12 @@
 NAME = ft_retro
 
-SRC_NAME = main.cpp Entity.class.cpp Game.class.cpp Wall.class.cpp Player.class.cpp MissileInline.class.cpp
+SRC_NAME = main.cpp \
+					 Entity.class.cpp \
+					 Game.class.cpp \
+					 Wall.class.cpp \
+					 Rock.class.cpp \
+					 ship.class.cpp \
+					 Enemy.class.cpp
 
 OBJ_NAME = $(SRC_NAME:.cpp=.o)
 

@@ -15,7 +15,7 @@ Game::Game(void) {
 	usq = 0;
 	getmaxyx(stdscr, Game::height, Game::width);
 	initWall();
-	test.init(10, 10, 5, "test.file");
+	this->player = new Player;
 }
 
 Game::Game(Game const & src)
@@ -26,54 +26,54 @@ Game::Game(Game const & src)
 Game::~Game()
 {
 	delete [] this->walls;
+	delete this->player;
 	endwin();
 }
 
-Game & Game::operator=(Game const & rhs)
+Game & 		Game::operator=(Game const & rhs)
 {
   (void)rhs;
   return *this;
 }
 
-void Game::initWall()
+void 		Game::initWall()
 {
 	this->walls = new Wall[Game::width];
 	for (int i = 0; i < Game::width; ++i)
-	{
 		walls[i].init(i);
-	}
 }
 
-void Game::input()
+void 		Game::input()
 {
 	int ch = wgetch(stdscr);
 
 	if (ch == 27)
 		this->stop = true;
 	else if (ch == KEY_UP)
-		printw("Up arrow is pressed\n");
+		this->player->moveUp();
 	else if(ch == KEY_RIGHT)
-		printw("Right arrow is pressed\n");
+		this->player->moveRight();
 	else if (ch == KEY_LEFT)
-		printw("Left arrow is pressed\n");
+		this->player->moveLeft();
 	else if (ch == KEY_DOWN)
-		printw("Down arrow is pressed\n");
+		this->player->moveDown();
 	else if (ch == ' ')
-		printw("Space bar is pressed\n");
+		this->player->activateMissiles();
 }
 
-void Game::loop(void) {
-	std::clock_t start;
-    double duration;
+void 		Game::loop(void) {
+	std::clock_t		start;
+    double 				duration;
 
     start = std::clock();
+	input(); 
 	aff();
 	input();
 	if (!usq)
 	{
 		for (int i = 1; i < Game::width; ++i)
 		{
-			walls[i-1].move(walls[i]);
+			walls[i-1].loop(walls[i]);
 		}
 		walls[Game::width-1].generate(walls[Game::width-2]);
 	}
@@ -81,23 +81,22 @@ void Game::loop(void) {
 	if (usq == 4)
 		usq = 0;
 	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
-	while (duration <= (double) 1 / FPS) {
+	while (duration <= (double) 1 / FPS)
 		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
-	}
 
 	return ;
 }
 
-void Game::aff(void) {
+void 		Game::aff(void) {
 	clear();
 	attron(A_REVERSE);
 	for (int i = 0; i < Game::width; ++i)
 		this->walls[i].display();
 	attroff(A_REVERSE);
-	test.display();
+	this->player->loop();
 	refresh();
 }
 
-bool Game::isStop(void) {
+bool 		Game::isStop(void) {
 	return stop;
 }

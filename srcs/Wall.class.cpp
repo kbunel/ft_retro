@@ -24,7 +24,7 @@ void Wall::init(int x)
 	Entity::init(x, x, 0, 3, 99999, ' ');
 }
 
-void Wall::move(Wall const & w)
+void Wall::loop(Wall const & w)
 {
 	this->y1 = w.getY1();
 	this->y2 = w.getY2();
