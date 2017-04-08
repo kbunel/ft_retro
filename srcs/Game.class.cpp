@@ -12,6 +12,7 @@ Game::Game(void) {
 	this->stop = false;
 	getmaxyx(stdscr, this->width, this->height);
 	initWall();
+	this->player = new Player;
 }
 
 Game::Game(Game const & src)
@@ -22,17 +23,18 @@ Game::Game(Game const & src)
 Game::~Game()
 {
 	delete [] this->walls;
+	delete this->player;
 	endwin();
 	return ;
 }
 
-Game & Game::operator=(Game const & rhs)
+Game & 		Game::operator=(Game const & rhs)
 {
   (void)rhs;
   return *this;
 }
 
-void Game::initWall()
+void 		Game::initWall()
 {
  this->walls = new Wall[this->height];
  for (int i = 0; i < this->height; ++i)
@@ -41,7 +43,7 @@ void Game::initWall()
  }
 }
 
-void Game::input()
+void 		Game::input()
 {
 	int ch = wgetch(stdscr);
 
@@ -61,9 +63,9 @@ void Game::input()
 	return ;
 }
 
-void Game::loop(void) {
-	std::clock_t start;
-    double duration;
+void 		Game::loop(void) {
+	std::clock_t		start;
+    double 				duration;
 
     start = std::clock();
 	aff();
@@ -80,16 +82,15 @@ void Game::loop(void) {
 	return ;
 }
 
-void Game::aff(void) {
+void 		Game::aff(void) {
 	clear();
 	mvprintw(30, x, "t");
 	for (int i = 0; i < this->height; ++i)
-	{
 		this->walls[i].display();
-	}
+	this->player->display();
 	refresh();
 }
 
-bool Game::isStop(void) {
+bool 		Game::isStop(void) {
 	return stop;
 }

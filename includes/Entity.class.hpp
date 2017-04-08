@@ -1,3 +1,5 @@
+#ifndef ENTITY_H
+#define ENTITY_H
 
 #include "ft_retro.h"
 
@@ -33,3 +35,5 @@ class Entity {
 
 		Entity &			operator=( Entity const & rhs );
 };
+
+#endif

@@ -3,6 +3,7 @@
 
 #include "ft_retro.h"
 #include "Wall.class.hpp"
+#include "Player.class.hpp"
 #define MAX_SHIPENEMY 10
 
 #define MIN_SIZE_WALL 2
@@ -10,41 +11,39 @@
 
 #define SIZE_INTERFACE 5
 
-
 class Game {
 
-private:
+	private:
 
-int x;
+		int			x;
 
-int width;
-int height;
+		int 		width;
+		int 		height;
 
-bool stop;
+		bool 		stop;
 
-//Player p;
-//ShipEnemy ens[];
-Wall *walls;
+		Player* 	player;
 
-void initWall();
+		//ShipEnemy ens[];
+		Wall 		*walls;
 
-public:
+		void 		initWall();
 
-Game();
-Game(Game const & game);
-~Game();
+	public:
 
-Game & operator=(Game const & src);
+		Game( void );
+		Game(Game const & game);
+		~Game();
 
-void input();
-void loop();
-void aff();
+		Game & 		operator=(Game const & src);
 
+		void 		input();
+		void 		loop();
+		void 		aff();
 
-int getWidth();
-int getHeight();
-bool isStop();
+		int 		getWidth();
+		int 		getHeight();
+		bool 		isStop();
 };
-
 
 #endif
