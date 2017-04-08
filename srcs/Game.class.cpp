@@ -3,8 +3,8 @@
 #include "../includes/Game.class.hpp"
 #include <unistd.h>
 
-int Game::width = 0;
-int Game::height = 0;
+int 				Game::width = 0;
+int 				Game::height = 0;
 Map*  				Game::map;
 std::string  		Game::mapChar = "init";
 
@@ -20,6 +20,7 @@ Game::Game(void) {
 	getmaxyx(stdscr, Game::height, Game::width);
 	Game::map = new Map();
 	initWall();
+	initEnemies();
 	this->player = new Player();
 }
 
@@ -32,6 +33,7 @@ Game::~Game()
 {
 	delete [] this->walls;
 	delete this->player;
+	delete Game::map;
 	endwin();
 }
 
@@ -46,6 +48,13 @@ void 		Game::initWall( void )
 	this->walls = new Wall[Game::width];
 	for (int i = 0; i < Game::width; ++i)
 		walls[i].init(i);
+}
+
+void 		Game::initEnemies( void )
+{
+	this->enemies = new Enemy[NB_ENEMIES];
+	for (int i = 0; i < 1; ++i)
+		enemies[i].init(Game::width + 10, Game::height / 2,  30, "enemy.file" );
 }
 
 void 		Game::input( void )
@@ -74,32 +83,29 @@ void 		Game::loop(void) {
 	input(); 
 	aff();
 
+//
+//	mvprintw( 10, 10, this->mapChar.c_str() );
+//	mvprintw( this->player->getY1(), this->player->getX1() - 2, "-" );
+//
+//
+//	int i = 0;
+//	int j;
+//	while (i < this->width) {
+//		j = 0;
+//		while(j < this->height) {
+//			if (Game::map->map[i][j] != "X")
+//				mvprintw( j, i, Game::map->map[i][j].c_str() );
+//			j++;
+//		}
+//		i++;
+//	}
+//
+//	
 
-	mvprintw( 10, 10, this->mapChar.c_str() );
-	mvprintw( this->player->getY1(), this->player->getX1() - 2, "-" );
+	for (int i = 0; i < NB_ENEMIES; i++)
+		this->enemies[i].moveLeft();
+	
 
-
-	int i = 0;
-	int j;
-	while (i < this->width) {
-		j = 0;
-		while(j < this->height) {
-			if (Game::map->map[i][j] != "X")
-				mvprintw( j, i, Game::map->map[i][j].c_str() );
-			j++;
-		}
-		i++;
-	}
-
-
-
-
-
-
-
-
-
-	input();
 	if (!usq)
 	{
 		for (int i = 1; i < Game::width; ++i)
@@ -124,6 +130,9 @@ void 		Game::aff(void) {
 	for (int i = 0; i < Game::width; ++i)
 		this->walls[i].display();
 	attroff(A_REVERSE);
+	this->player->loop();
+	for (int i = 0; i < NB_ENEMIES ; ++i)
+		this->enemies[i].loop();
 	this->player->loop();
 	refresh();
 }

@@ -48,11 +48,9 @@ bool		Entity::checkColision( void ) {
 	int		i = this->x1;
 	int		j;
 	
-	Game::mapChar = "CC: ";
-	Game::mapChar += Game::map->map[this->x1 - 1][this->y1];
-	while (i < this->x2) {
+	while (i < this->x2 && i >= 0 && i < Game::width) {
 		j = this->y1;
-		while (j < this->y2) {
+		while (j < this->y2 && j >= 0 && j < Game::height) {
 			if (Game::map->map[i][j] != "X" && Game::map->map[i][j] != this->address)
 				exit(1);
 			j++;

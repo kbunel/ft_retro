@@ -36,9 +36,9 @@ void			Map::addReference( Entity const & entity, std::string ref ) {
 	int			i = entity.getX1();
 	int			j;
 
-	while (i <= entity.getX2()) {
+	while (i <= entity.getX2() && i >= 0 && i < Game::width) {
  		j = entity.getY1();
-		while (j < entity.getY2()) {
+		while (j <= entity.getY2() && j >= 0 && j < Game::height) {
 			this->map[i][j] = ref;
 			j++;
 		}

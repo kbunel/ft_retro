@@ -5,6 +5,7 @@
 #include "Wall.class.hpp"
 #include "Player.class.hpp"
 #include "Map.class.hpp"
+#include "Enemy.class.hpp"
 
 #define MAX_SHIP_ENEMY 10
 
@@ -17,11 +18,12 @@ class Game {
 	private:
 
 		void 		initWall();
+		void 		initEnemies();
 
 		int usq;
 		bool 		stop;
 		Player* 	player;
-		//ShipEnemy ens[];
+		Enemy 		*enemies;
 		Wall 		*walls;
 
 	public:

@@ -26,9 +26,12 @@ void					MissileInline::initiate( int x, int y ) {
 
 void					MissileInline::loop( void ) {
 	if (this->x1 <= Game::width && this->activated) {
+		Game::map->addReference(*this, "X");
 		this->display();
 		this->x1++;
 		this->x2++;
+		this->checkColision();
+		Game::map->addReference(*this, this->address);
 	}
 	else
 		this->activated = false;
