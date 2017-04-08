@@ -19,7 +19,8 @@ Wall(Wall const & game);
 
 Wall & operator=(Wall const & src);
 
-/*void init();*/
+void init(int x);
+void move(Wall w);
 };
 
 #endif
