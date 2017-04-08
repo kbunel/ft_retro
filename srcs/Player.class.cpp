@@ -2,7 +2,7 @@
 #include "../includes/Game.class.hpp"
 
 Player::Player( void ) {
-	this->init(3, 5, Game::height / 2 - 1, Game::height / 2 + 1, 100, 'D' );
+	this->init(3, Game::height / 2 - 1, 100, "test.file" );
 	return;
 }
 

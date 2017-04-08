@@ -1,9 +1,10 @@
 
 #include "../includes/ft_retro.h"
 #include "../includes/Game.class.hpp"
+#include <unistd.h>
 
-int 				Game::width = 0;
-int 				Game::height = 0;
+int Game::width = 0;
+int Game::height = 0;
 Map*  				Game::map;
 std::string  		Game::mapChar = "init";
 
@@ -14,8 +15,8 @@ Game::Game(void) {
 	keypad(stdscr, TRUE);
 	timeout(0);
 	curs_set(0);
-	this->x = 10;
 	this->stop = false;
+	usq = 0;
 	getmaxyx(stdscr, Game::height, Game::width);
 	Game::map = new Map();
 	initWall();
@@ -42,8 +43,8 @@ Game & 		Game::operator=(Game const & rhs)
 
 void 		Game::initWall( void )
 {
-	this->walls = new Wall[Game::height];
-	for (int i = 0; i < Game::height; ++i)
+	this->walls = new Wall[Game::width];
+	for (int i = 0; i < Game::width; ++i)
 		walls[i].init(i);
 }
 
@@ -73,6 +74,7 @@ void 		Game::loop(void) {
 	input(); 
 	aff();
 
+
 	mvprintw( 10, 10, this->mapChar.c_str() );
 	mvprintw( this->player->getY1(), this->player->getX1() - 2, "-" );
 
@@ -93,10 +95,22 @@ void 		Game::loop(void) {
 
 
 
-	for (int i = 1; i < Game::height; ++i)
-		walls[i-1] = walls[i];
-	walls[Game::height-1].loop(walls[Game::height-2]);
-	x = (x < 70) ? x + 1 : 10;
+
+
+
+
+	input();
+	if (!usq)
+	{
+		for (int i = 1; i < Game::width; ++i)
+		{
+			walls[i-1].loop(walls[i]);
+		}
+		walls[Game::width-1].generate(walls[Game::width-2]);
+	}
+	usq++;
+	if (usq == 4)
+		usq = 0;
 	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 	while (duration <= (double) 1 / FPS)
 		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
@@ -106,8 +120,10 @@ void 		Game::loop(void) {
 
 void 		Game::aff(void) {
 	clear();
-	for (int i = 0; i < this->height; ++i)
+	attron(A_REVERSE);
+	for (int i = 0; i < Game::width; ++i)
 		this->walls[i].display();
+	attroff(A_REVERSE);
 	this->player->loop();
 	refresh();
 }

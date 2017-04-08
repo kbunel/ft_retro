@@ -6,10 +6,7 @@
 #include "Player.class.hpp"
 #include "Map.class.hpp"
 
-#define MAX_SHIPENEMY 10
-
-#define MIN_SIZE_WALL 2
-#define MAX_SIZE_WALL 20
+#define MAX_SHIP_ENEMY 10
 
 #define SIZE_INTERFACE 5
 
@@ -21,7 +18,7 @@ class Game {
 
 		void 		initWall();
 
-		int			x;
+		int usq;
 		bool 		stop;
 		Player* 	player;
 		//ShipEnemy ens[];
