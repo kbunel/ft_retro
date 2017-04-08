@@ -1,20 +1,8 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: kbunel <marvin@42.fr>                      +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2017/04/07 23:48:30 by kbunel            #+#    #+#              #
-#    Updated: 2017/04/08 00:14:35 by kbunel           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = ft_retro
 
-SRC_NAME = main.cc
+SRC_NAME = main.cpp Entity.class.cpp Game.class.cpp
 
-OBJ_NAME = $(SRC_NAME:.cc=.o)
+OBJ_NAME = $(SRC_NAME:.cpp=.o)
 
 HEADER_NAME = ft_retro.h
 
