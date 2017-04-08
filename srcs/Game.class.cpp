@@ -1,6 +1,6 @@
 
 #include "../includes/Game.class.hpp"
-
+#include <unistd.h>
 int Game::width = 0;
 int Game::height = 0;
 
@@ -11,10 +11,11 @@ Game::Game(void) {
 	keypad(stdscr, TRUE);
 	timeout(0);
 	curs_set(0);
-	this->x = 10;
 	this->stop = false;
-	getmaxyx(stdscr, Game::width, Game::height);
+	usq = 0;
+	getmaxyx(stdscr, Game::height, Game::width);
 	initWall();
+	test.init(10, 10, 5, "test.file");
 }
 
 Game::Game(Game const & src)
@@ -36,8 +37,8 @@ Game & Game::operator=(Game const & rhs)
 
 void Game::initWall()
 {
-	this->walls = new Wall[Game::height];
-	for (int i = 0; i < Game::height; ++i)
+	this->walls = new Wall[Game::width];
+	for (int i = 0; i < Game::width; ++i)
 	{
 		walls[i].init(i);
 	}
@@ -68,15 +69,17 @@ void Game::loop(void) {
     start = std::clock();
 	aff();
 	input();
-	for (int i = 1; i < Game::height; ++i)
+	if (!usq)
 	{
-		walls[i-1] = walls[i];
+		for (int i = 1; i < Game::width; ++i)
+		{
+			walls[i-1].move(walls[i]);
+		}
+		walls[Game::width-1].generate(walls[Game::width-2]);
 	}
-	walls[Game::height-1].move(walls[Game::height-2]);
-	if (x < 70)
-		x++;
-	else
-		x = 10;
+	usq++;
+	if (usq == 4)
+		usq = 0;
 	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 	while (duration <= (double) 1 / FPS) {
 		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
@@ -87,11 +90,11 @@ void Game::loop(void) {
 
 void Game::aff(void) {
 	clear();
-	mvprintw(30, x, "t");
-	for (int i = 0; i < this->height; ++i)
-	{
+	attron(A_REVERSE);
+	for (int i = 0; i < Game::width; ++i)
 		this->walls[i].display();
-	}
+	attroff(A_REVERSE);
+	test.display();
 	refresh();
 }
 

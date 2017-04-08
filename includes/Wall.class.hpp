@@ -20,7 +20,9 @@ Wall(Wall const & game);
 Wall & operator=(Wall const & src);
 
 void init(int x);
-void move(Wall w);
+void display();
+void move(Wall const & w);
+void generate(Wall const & w);
 };
 
 #endif

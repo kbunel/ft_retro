@@ -1,5 +1,5 @@
 #include "../includes/Entity.class.hpp"
-
+#include <unistd.h>
 Entity::Entity( void ) {
 this->init(-1, -1, -1, -1, 0, ' ');
 }
@@ -22,7 +22,7 @@ void		Entity::display( void ) {
 	while (i <= x2 - x1) {
 		j = 0;
 		while (j <= y2 - y1) {
-			mvprintw( this->y1 + j, this->x1 + i, this->dispChars[i][j].c_str() );
+			mvprintw( this->y1 + j, this->x1 + i, this->dispChars[j][i].c_str() );
 			j++;
 		}
 		i++;
@@ -39,19 +39,66 @@ void		Entity::init( int x1, int x2, int y1, int y2, int life, char dispChar) {
 	this->y1 		= y1;
 	this->y2 		= y2;
 	this->life	 	= life;
+	this->generateDispChars(dispChar);
+}
+
+void		Entity::init( int x, int y, int life, std::string file) {
+	std::ifstream fichier(file, std::ios::in);
+	int nbLignes = 0;
+
+	this->x1 = x;
+	this->y1 = y;
+
+	if (fichier)
+	{
+		std::string line;
+		while (std::getline(fichier, line))
+		{
+			nbLignes++;
+			this->x2 = x + std::strlen(line.c_str())-1;
+		}
+		fichier.close();
+	}
+	int i = 0;
+	int j;
+ 	std::ifstream fichier2(file, std::ios::in);
+	this->y2 = y + nbLignes-1;
+	if (fichier2)
+	{
+		this->dispChars = new std::string*[this->x2 - this->x1+1];
+		std::string line;
+		while (std::getline(fichier2, line))
+		{
+			j = 0;
+			dispChars[i] = new std::string[this->y2 - this->y1 + 1];
+			while (j <= this->y2 - this->y1) {
+				dispChars[i][j] = line[j];
+			 	mvprintw(20, 10, dispChars[i][j].c_str());
+			    refresh();
+			    j++;
+			}
+			i++;
+		}
+		fichier2.close();
+	}
+	this->life	 	= life;
+}
+
+void Entity::generateDispChars(char dispChar)
+{
 	int				i = 0;
 	int				j;
 
 	this->dispChars = new std::string*[this->x2 - this->x1 + 1];
-	while (i <= x2 - x1) {
+	while (i <= this->x2 - this->x1) {
 		j = 0;
 		dispChars[i] = new std::string[this->y2 - this->y1 + 1];
-		while (j <= y2 - y1) {
+		while (j <= this->y2 - this->y1) {
 			dispChars[i][j] = dispChar;
 			j++;
 		}
 		i++;
-	}
+	}	
 }
 
 int			Entity::getLife( void ) const {
