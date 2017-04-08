@@ -9,7 +9,7 @@ class Wall: public Entity {
 
 private:
 
-
+void calculatePosition();
 
 public:
 
@@ -19,7 +19,7 @@ Wall(Wall const & game);
 
 Wall & operator=(Wall const & src);
 
-
+/*void init();*/
 };
 
 #endif
