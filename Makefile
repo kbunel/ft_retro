@@ -1,6 +1,6 @@
 NAME = ft_retro
 
-SRC_NAME = main.cpp Entity.class.cpp Game.class.cpp
+SRC_NAME = main.cpp Entity.class.cpp Game.class.cpp Wall.class.cpp
 
 OBJ_NAME = $(SRC_NAME:.cpp=.o)
 
@@ -26,7 +26,7 @@ $(NAME): $(OBJ)
 	@echo "  Compiling \033[32m$@\033[32m √\033[0m"
 	@$(CC) $(OBJ) -o $@ -lncurses
 
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.cc
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
 	@echo "  Compiling \033[36m$@\033[0m"
 	@$(CC) $(CFLAGS) -o $@ -c $<

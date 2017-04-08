@@ -12,11 +12,34 @@ Game::Game()
 	curs_set(0);
 	this->x = 10;
 	this->stop = false;
+	getmaxyx(stdscr, this->width, this->height);
+	initWall();
+}
+
+Game::Game(Game const & src)
+{
+  *this = src;
 }
 
 Game::~Game()
 {
+	delete [] this->walls;
 	endwin();
+}
+
+Game & Game::operator=(Game const & rhs)
+{
+  (void)rhs;
+  return *this;
+}
+
+void Game::initWall()
+{
+ this->walls = new Wall[this->height];
+ for (int i = 0; i < this->height; ++i)
+ {
+ 	this->walls[i].init( this->height, this->height, 0, 2, 999999);
+ }
 }
 
 void Game::input()
