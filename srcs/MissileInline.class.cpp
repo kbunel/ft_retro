@@ -1,11 +1,10 @@
-#include "../includes/Game.class.hpp"
 #include "../includes/ft_retro.h"
+#include "../includes/Game.class.hpp"
 #include "../includes/MissileInline.class.hpp"
 
 MissileInline::MissileInline( void ) : activated(false) {
 	return;
 }
-
 
 MissileInline::MissileInline( MissileInline const & missileInliine ) {
 	*this = missileInliine;
@@ -33,4 +32,5 @@ void					MissileInline::loop( void ) {
 	}
 	else
 		this->activated = false;
+	Entity::loop();
 }

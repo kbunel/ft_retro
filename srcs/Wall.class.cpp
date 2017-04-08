@@ -24,7 +24,7 @@ void Wall::init(int x)
 	Entity::init(x, x, 0, 2, 99999, 'q');
 }
 
-void Wall::move(Wall w)
+void Wall::loop(Wall w)
 {
 	Entity::init(0, 0, 0, 2, 99999, 'a');
 	int rand = std::rand() % 2;

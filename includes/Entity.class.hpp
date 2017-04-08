@@ -13,7 +13,7 @@ class Entity {
 
 		void				loop( void );
 		void				display( void );
-		bool				checkColision( int x, int y);
+		bool				checkColision( void );
 		void				init( int x1, int x2, int y1, int y2, int life, char dispChar);
 
 		int					getLife( void ) const;
@@ -30,6 +30,7 @@ class Entity {
 		int					y1;
 		int					y2;
 		std::string			**dispChars;
+		std::string			address;
 
 	private:
 

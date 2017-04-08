@@ -1,12 +1,23 @@
 #include "../includes/Entity.class.hpp"
+#include "../includes/Map.class.hpp"
+#include "../includes/Game.class.hpp"
 
 Entity::Entity( void ) {
+	std::stringstream  	address;
+
+	address << this;
 	this->init(-1, -1, -1, -1, 0, ' ');
+	this->address = address.str();
+	Game::map->addReference(*this, this->address);
 	return;
 }
 
 Entity::Entity( int x1, int x2, int y1, int y2, int life, char dispChar ) {
+	std::stringstream  	address;
+
+	address << this;
 	this->init(x1, x2, y1, y2, life, dispChar);
+	this->address = address.str();
 	return;
 }
 
@@ -15,12 +26,13 @@ Entity::~Entity() {
 }
 
 void		Entity::loop( void ) {
-
+	
 }
 
 void		Entity::display( void ) {
 	int			i = 0;
 	int			j;
+		
 	while (i <= x2 - x1) {
 		j = 0;
 		while (j <= y2 - y1) {
@@ -31,8 +43,22 @@ void		Entity::display( void ) {
 	}
 }
 
-bool		Entity::checkColision( int x, int y) {
-	return (x >= this->x1 && x <= this->x2 && y >= this->y1 && y <= this->y2);
+bool		Entity::checkColision( void ) {
+	int		i = this->x1;
+	int		j;
+	
+	Game::mapChar = "CC: ";
+	Game::mapChar += Game::map->map[this->x1 - 1][this->y1];
+	while (i < this->x2) {
+		j = this->y1;
+		while (j < this->y2) {
+			if (Game::map->map[i][j] != "X" && Game::map->map[i][j] != this->address)
+				exit(1);
+			j++;
+		}
+		i++;
+	}
+	return false;
 }
 
 void		Entity::init( int x1, int x2, int y1, int y2, int life, char dispChar) {

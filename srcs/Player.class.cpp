@@ -33,34 +33,47 @@ void				Player::loop( void ) {
 	this->display();
 	while (i < MAX_MISSILES_IN_SLOT)
 			missiles[i++].loop();
+	Entity::loop();
 }
 
 void 				Player::moveUp( void ) {
+	Game::map->addReference(*this, "X");
 	if (this->y1 > 0) {
 		this->y1 -= 1;
 		this->y2 -= 1;
 	}
+	this->checkColision();
+	Game::map->addReference(*this, this->address);
 }
 
 void 				Player::moveLeft( void ) {
+	Game::map->addReference(*this, "X");
 	if (this->x1 > 1) {
 		this->x1 -= 1;
 		this->x2 -= 1;
 	}
+	this->checkColision();
+	Game::map->addReference(*this, this->address);
 }
 
 void 				Player::moveRight( void ) {
+	Game::map->addReference(*this, "X");
 	if (this->x2 < Game::width - 1) {
 		this->x1 += 1;
 		this->x2 += 1;
 	}
+	this->checkColision();
+	Game::map->addReference(*this, this->address);
 }
 
 void 				Player::moveDown( void ) {
+	Game::map->addReference(*this, "X");
 	if (this->y2 < Game::height - 1) {
 		this->y1 += 1;
 		this->y2 += 1;
 	}
+	this->checkColision();
+	Game::map->addReference(*this, this->address);
 }
 
 Player &			Player::operator=( Player const & rhs ) {

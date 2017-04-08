@@ -4,6 +4,7 @@
 #include "ft_retro.h"
 #include "Wall.class.hpp"
 #include "Player.class.hpp"
+#include "Map.class.hpp"
 
 #define MAX_SHIPENEMY 10
 
@@ -12,7 +13,7 @@
 
 #define SIZE_INTERFACE 5
 
-#define FPS 120
+#define FPS 60
 
 class Game {
 
@@ -39,10 +40,13 @@ class Game {
 		int 		getHeight();
 		bool 		isStop();
 		
-		static int 	width;
-		static int 	height;
+		static int 			width;
+		static int 			height;
+		static Map*  		map;
+		static std::string  		mapChar;
 
 		Game & 		operator=(Game const & src);
+
 };
 
 #endif
