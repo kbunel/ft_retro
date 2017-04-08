@@ -6,7 +6,7 @@
 /*   By: kbunel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/07 23:54:48 by kbunel            #+#    #+#             */
-/*   Updated: 2017/04/08 00:07:04 by kbunel           ###   ########.fr       */
+/*   Updated: 2017/04/08 12:18:26 by kbunel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 #define FT_RETRO_H
 
 #include <ncurses.h>
+#include <string>
 
 #endif

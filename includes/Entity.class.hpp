@@ -6,7 +6,7 @@
 /*   By: kbunel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/08 09:54:26 by kbunel            #+#    #+#             */
-/*   Updated: 2017/04/08 10:53:46 by kbunel           ###   ########.fr       */
+/*   Updated: 2017/04/08 12:30:03 by kbunel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,32 @@
 class Entity {
 
 	public:
-		Entity( int x1, int x2, int y1, int y2, int life );
+		Entity( void );
+		Entity( int x1, int x2, int y1, int y2, int life, char dispChar );
+		Entity( Entity const & src );
 		~Entity( void );
 
-		void		loop( void );
-		void		display( void );
-		bool		checkColision( int x, int y);
-		int			getLife( void );
+		void				loop( void );
+		void				display( void );
+		bool				checkColision( int x, int y);
+		void				init( int x1, int x2, int y1, int y2, int life, char dispChar);
 
-		int			getX1( void );
-		int			getX2( void );
-		int			getY1( void );
-		int			getY2( void );
-		void		setY1( int x1 );
-		void		setY2( int x2 );
-		void		setX1( int y1 );
-		void		setX2( int y2 );
+		int					getLife( void ) const;
+		int					getX1( void ) const;
+		int					getX2( void ) const;
+		int					getY1( void ) const;
+		int					getY2( void ) const;
+		std::string**		getDispChars( void ) const;
 
 	protected:
-		int			life;
-		int			x1;
-		int			x2;
-		int			y1;
-		int			y2;
+		int					life;
+		int					x1;
+		int					x2;
+		int					y1;
+		int					y2;
+		std::string			**dispChars;
+
+	private:
+
+		Entity &			operator=( Entity const & rhs );
 };
