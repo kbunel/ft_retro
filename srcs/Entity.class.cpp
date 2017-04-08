@@ -6,7 +6,7 @@
 /*   By: kbunel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/08 09:51:38 by kbunel            #+#    #+#             */
-/*   Updated: 2017/04/08 10:54:31 by kbunel           ###   ########.fr       */
+/*   Updated: 2017/04/08 11:42:17 by jaubard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ Entity::Entity( int x1, int x2, int y1, int y2, int life ) : life(life), x1(x1),
 
 }
 
-Entity::~Entity() {
+Entity::~Entity( void ) {
 
 }
 
