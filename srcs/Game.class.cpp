@@ -1,6 +1,9 @@
 
 #include "../includes/Game.class.hpp"
 
+int Game::width = 0;
+int Game::height = 0;
+
 Game::Game(void) {
 	initscr();
 	cbreak();
@@ -10,7 +13,7 @@ Game::Game(void) {
 	curs_set(0);
 	this->x = 10;
 	this->stop = false;
-	getmaxyx(stdscr, this->width, this->height);
+	getmaxyx(stdscr, Game::width, Game::height);
 	initWall();
 }
 
@@ -23,7 +26,6 @@ Game::~Game()
 {
 	delete [] this->walls;
 	endwin();
-	return ;
 }
 
 Game & Game::operator=(Game const & rhs)
@@ -34,11 +36,11 @@ Game & Game::operator=(Game const & rhs)
 
 void Game::initWall()
 {
- this->walls = new Wall[this->height];
- for (int i = 0; i < this->height; ++i)
- {
- 	this->walls[i].init( i, i, 0, 2, 999999, 'a');
- }
+	this->walls = new Wall[Game::height];
+	for (int i = 0; i < Game::height; ++i)
+	{
+		walls[i].init(i);
+	}
 }
 
 void Game::input()
@@ -57,8 +59,6 @@ void Game::input()
 		printw("Down arrow is pressed\n");
 	else if (ch == ' ')
 		printw("Space bar is pressed\n");
-
-	return ;
 }
 
 void Game::loop(void) {
@@ -68,12 +68,17 @@ void Game::loop(void) {
     start = std::clock();
 	aff();
 	input();
+	for (int i = 1; i < Game::height; ++i)
+	{
+		walls[i-1] = walls[i];
+	}
+	walls[Game::height-1].move(walls[Game::height-2]);
 	if (x < 70)
 		x++;
 	else
 		x = 10;
 	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
-	while (duration <= (double) 1 / 120) {
+	while (duration <= (double) 1 / FPS) {
 		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 	}
 

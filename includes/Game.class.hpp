@@ -3,6 +3,7 @@
 
 #include "ft_retro.h"
 #include "Wall.class.hpp"
+
 #define MAX_SHIPENEMY 10
 
 #define MIN_SIZE_WALL 2
@@ -10,15 +11,13 @@
 
 #define SIZE_INTERFACE 5
 
+#define FPS 120
 
 class Game {
 
 private:
 
 int x;
-
-int width;
-int height;
 
 bool stop;
 
@@ -29,6 +28,9 @@ Wall *walls;
 void initWall();
 
 public:
+
+static int width;
+static int height;
 
 Game();
 Game(Game const & game);
