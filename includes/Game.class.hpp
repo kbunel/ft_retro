@@ -3,6 +3,7 @@
 
 #include "ft_retro.h"
 #include "Wall.class.hpp"
+#include "Player.class.hpp"
 
 #define MAX_SHIPENEMY 10
 
@@ -15,38 +16,33 @@
 
 class Game {
 
-private:
+	private:
 
-int x;
+		void 		initWall();
 
-bool stop;
+		int			x;
+		bool 		stop;
+		Player* 	player;
+		//ShipEnemy ens[];
+		Wall 		*walls;
 
-//Player p;
-//ShipEnemy ens[];
-Wall *walls;
+	public:
+		
+		Game( void );
+		Game(Game const & game);
+		~Game();
 
-void initWall();
+		void 		input();
+		void 		loop();
+		void 		aff();
+		int 		getWidth();
+		int 		getHeight();
+		bool 		isStop();
+		
+		static int 	width;
+		static int 	height;
 
-public:
-
-static int width;
-static int height;
-
-Game();
-Game(Game const & game);
-~Game();
-
-Game & operator=(Game const & src);
-
-void input();
-void loop();
-void aff();
-
-
-int getWidth();
-int getHeight();
-bool isStop();
+		Game & 		operator=(Game const & src);
 };
-
 
 #endif

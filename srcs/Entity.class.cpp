@@ -1,19 +1,21 @@
 #include "../includes/Entity.class.hpp"
 
 Entity::Entity( void ) {
-this->init(-1, -1, -1, -1, 0, ' ');
+	this->init(-1, -1, -1, -1, 0, ' ');
+	return;
 }
 
 Entity::Entity( int x1, int x2, int y1, int y2, int life, char dispChar ) {
 	this->init(x1, x2, y1, y2, life, dispChar);
+	return;
 }
 
 Entity::~Entity() {
-
+	return;
 }
 
 void		Entity::loop( void ) {
-	
+
 }
 
 void		Entity::display( void ) {
