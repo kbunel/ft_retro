@@ -21,8 +21,6 @@ class Game {
 		void 		initWall();
 
 		int			x;
-		int 		width;
-		int 		height;
 		bool 		stop;
 		Player* 	player;
 		//ShipEnemy ens[];

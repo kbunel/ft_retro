@@ -15,7 +15,7 @@ Entity::~Entity() {
 }
 
 void		Entity::loop( void ) {
-	
+
 }
 
 void		Entity::display( void ) {
