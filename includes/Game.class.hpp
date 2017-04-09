@@ -24,7 +24,8 @@ class Game {
 		bool 		stop;
 		Player* 	player;
 		Enemy 		*enemies;
-		Wall 		*walls;
+		Wall 		*wallsH;
+		Wall 		*wallsB;
 
 	public:
 		
@@ -39,6 +40,8 @@ class Game {
 		int 		getHeight();
 		bool 		isStop();
 		
+		static void error(std::string err);
+
 		static int 			width;
 		static int 			height;
 		static Map*  		map;

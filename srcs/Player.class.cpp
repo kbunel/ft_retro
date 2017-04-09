@@ -30,7 +30,6 @@ void 				Player::activateMissiles( void ) {
 void				Player::loop( void ) {
 	int			i = 0;
 
-	this->display();
 	while (i < MAX_MISSILES_IN_SLOT)
 			missiles[i++].loop();
 	Entity::loop();

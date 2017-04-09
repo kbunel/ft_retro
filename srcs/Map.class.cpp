@@ -32,6 +32,11 @@ Map &			Map::operator=( Map const & rhs ) {
 	return *this;
 }
 
+void			Map::putReference(int x, int y, std::string ref)
+{
+	this->map[x][y] = ref;
+}
+
 void			Map::addReference( Entity const & entity, std::string ref ) {
 	int			i = entity.getX1();
 	int			j;

@@ -11,6 +11,7 @@ class Map {
 		~Map( void );
 
 		void					addReference( Entity const & entity, std::string ref );
+		void					putReference( int x, int y, std::string ref );
 		void					loop( void );
 		
 		std::string				**map;

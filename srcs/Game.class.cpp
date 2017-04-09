@@ -31,7 +31,8 @@ Game::Game(Game const & src)
 
 Game::~Game()
 {
-	delete [] this->walls;
+	delete [] this->wallsH;
+	delete [] this->wallsB;
 	delete this->player;
 	delete Game::map;
 	endwin();
@@ -45,9 +46,17 @@ Game & 		Game::operator=(Game const & rhs)
 
 void 		Game::initWall( void )
 {
-	this->walls = new Wall[Game::width];
-	for (int i = 0; i < Game::width; ++i)
-		walls[i].init(i);
+	{
+		this->wallsH = new Wall[Game::width];
+		for (int i = 0; i < Game::width; ++i)
+			wallsH[i].init(i, TRUE);
+	}
+	{
+		this->wallsB = new Wall[Game::width];
+		for (int i = 0; i < Game::width; ++i)
+			wallsB[i].init(i, FALSE);
+	}
+
 }
 
 void 		Game::initEnemies( void )
@@ -83,8 +92,7 @@ void 		Game::loop(void) {
 	input(); 
 	aff();
 
-
-	mvprintw( 10, 10, this->mapChar.c_str() );
+/*	mvprintw( 10, 10, this->mapChar.c_str() );
 	mvprintw( this->player->getY1(), this->player->getX1() - 2, "-" );
 
 
@@ -99,24 +107,29 @@ void 		Game::loop(void) {
 		}
 		i++;
 	}
-
-	
-
+*/
 	for (int i = 0; i < NB_ENEMIES; i++)
 		this->enemies[i].moveLeft();
+
+	this->player->loop();
 	
 
 	if (!usq)
 	{
 		for (int i = 1; i < Game::width; ++i)
 		{
-			walls[i-1].loop(walls[i]);
+			wallsH[i-1].loop(wallsH[i]);
 		}
-		walls[Game::width-1].generate(walls[Game::width-2]);
+		wallsH[Game::width-1].generate(wallsH[Game::width-2]);
+		for (int i = 1; i < Game::width; ++i)
+		{
+			wallsB[i-1].loop(wallsB[i]);
+		}
+		wallsB[Game::width-1].generate(wallsB[Game::width-2]);
 	}
-	usq++;
-	if (usq == 4)
-		usq = 0;
+		usq++;
+		if (usq == 4)
+			usq = 0;
 	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 	while (duration <= (double) 1 / FPS)
 		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
@@ -126,17 +139,24 @@ void 		Game::loop(void) {
 
 void 		Game::aff(void) {
 	clear();
-	attron(A_REVERSE);
+/*	for (int i = 0; i < Game::width; ++i)
+		this->wallsH[i].display();
 	for (int i = 0; i < Game::width; ++i)
-		this->walls[i].display();
-	attroff(A_REVERSE);
-	this->player->loop();
-	for (int i = 0; i < NB_ENEMIES ; ++i)
-		this->enemies[i].loop();
-	this->player->loop();
+		this->wallsB[i].display();
+*/
+	this->player->display();
+//	for (int i = 0; i < NB_ENEMIES ; ++i)
+//		this->enemies[i].loop();
 	refresh();
 }
 
 bool 		Game::isStop(void) {
 	return stop;
+}
+
+void Game::error(std::string err)
+{
+	endwin();
+	std::cerr << err << std::endl;
+	exit(1);
 }

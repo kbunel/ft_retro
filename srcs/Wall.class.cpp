@@ -19,52 +19,59 @@ Wall & Wall::operator=(Wall const & rhs)
   return *this;
 }
 
-void Wall::init(int x)
+void Wall::init(int x, bool haut)
 {
-	Entity::init(x, x, 0, 3, 99999, ' ');
+	if (haut)
+		Entity::init(x, x, 0, 3, 99999, '#');
+	else
+		Entity::init(x, x, Game::height - SIZE_INTERFACE-3, Game::height - SIZE_INTERFACE, 99999, '#');		
+	this->haut = haut;
 }
 
 void Wall::loop(Wall const & w)
 {
+	Game::map->addReference(*this, "X");
 	this->y1 = w.getY1();
 	this->y2 = w.getY2();
-	Entity::generateDispChars(' ');
+	Entity::generateDispChars('#');
+	Game::map->addReference(*this, this->address);
 }
 
 void Wall::generate(Wall const & w)
 {
-	int rand = std::rand() % 3;
-	this->y1 = w.getY1();
-	if (rand == 0)
+	if (haut)
 	{
-		if (this->y2 < Game::height / 2 - 15)
-		this->y2 = w.getY2()+1;
-	}
-	else if (rand == 1)
-	{
-		if (this->y2 > 0)
-		this->y2 = w.getY2() - 1;		
+		int rand = std::rand() % 3;
+		this->y1 = w.getY1();
+		if (rand == 0)
+		{
+			if (this->y2 < Game::height / 2 - 15)
+				this->y2 = w.getY2()+1;
+		}
+		else if (rand == 1)
+		{
+			if (this->y2 > 0)
+				this->y2 = w.getY2() - 1;		
+		}
+		else
+			this->y2 = w.getY2();		
 	}
 	else
+	{
+		int rand = std::rand() % 3;
 		this->y2 = w.getY2();
-	Entity::generateDispChars(' ');
-}
-
-void Wall::display()
-{
-	int			i = 0;
-	int			j;
-	Game::map->addReference(*this, "X");
-	while (i <= x2 - x1) {
-		j = 0;
-		while (j <= y2 - y1) {
-			mvprintw( this->y1 + j, this->x1 + i, this->dispChars[i][j].c_str() );
-			mvprintw( Game::height - j - SIZE_INTERFACE, this->x1 + i, this->dispChars[i][j].c_str() );
-			mvprintw( Game::height - SIZE_INTERFACE, this->x1 + i, this->dispChars[i][j].c_str() );
-			j++;
+		if (rand == 0)
+		{
+			if (this->y1 <= Game::height - SIZE_INTERFACE-3)
+				this->y1 = w.getY1()+1;
 		}
-		i++;
+		else if (rand == 1)
+		{
+			if (this->y1 > Game::height / 2 + 10)
+				this->y1 = w.getY1() - 1;
+		}
+		else
+			this->y1 = w.getY1();		
 	}
-	this->checkColision();
-	Game::map->addReference(*this, this->address);
+	Entity::generateDispChars(' ');
 }
