@@ -30,11 +30,11 @@ void Wall::init(int x, bool haut)
 
 void Wall::loop(Wall const & w)
 {
-	Game::map->addReference(*this, "X");
+	Game::map->addReference(*this, NULL);
 	this->y1 = w.getY1();
 	this->y2 = w.getY2();
 	Entity::generateDispChars('#');
-	Game::map->addReference(*this, this->address);
+	Game::map->addReference(*this, this);
 }
 
 void Wall::generate(Wall const & w)

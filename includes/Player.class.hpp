@@ -19,6 +19,7 @@ class Player : public Entity {
 		void 				moveLeft( void );
 		void 				moveRight( void );
 		void 				moveDown( void );
+		MissileInline*		getMissiles( void );
 
 	private:
 

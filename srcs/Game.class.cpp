@@ -61,9 +61,14 @@ void 		Game::initWall( void )
 
 void 		Game::initEnemies( void )
 {
+	int		y;
 	this->enemies = new Enemy[NB_ENEMIES];
-	for (int i = 0; i < 1; ++i)
-		enemies[i].init(Game::width + 10, Game::height / 2,  30, "enemy.file" );
+	for (int i = 0; i < NB_ENEMIES; ++i) {
+		y = std::rand() % 4;
+		y *= (y % 2 == 0) ? 1 : -1; 
+		y = (Game::height / 2 ) + y ;
+		enemies[i].init(Game::width + 10, y,  1, "enemy.file" );
+	}
 }
 
 void 		Game::input( void )
@@ -92,27 +97,11 @@ void 		Game::loop(void) {
 	input(); 
 	aff();
 
-/*	mvprintw( 10, 10, this->mapChar.c_str() );
-	mvprintw( this->player->getY1(), this->player->getX1() - 2, "-" );
-
-
-	int i = 0;
-	int j;
-	while (i < this->width) {
-		j = 0;
-		while(j < this->height) {
-			if (Game::map->map[i][j] != "X")
-				mvprintw( j, i, Game::map->map[i][j].c_str() );
-			j++;
-		}
-		i++;
-	}
-*/
-	for (int i = 0; i < NB_ENEMIES; i++)
-		this->enemies[i].moveLeft();
-
+	this->activateEnemies();	
 	this->player->loop();
-	
+
+	for (int i = 0; i < NB_ENEMIES ; ++i)
+		this->enemies[i].loop();
 
 	if (!usq)
 	{
@@ -138,16 +127,38 @@ void 		Game::loop(void) {
 }
 
 void 		Game::aff(void) {
+	MissileInline* 		p_missiles;
+	MissileInline* 		e_missiles;
+
 	clear();
-/*	for (int i = 0; i < Game::width; ++i)
+	for (int i = 0; i < Game::width; ++i)
 		this->wallsH[i].display();
 	for (int i = 0; i < Game::width; ++i)
 		this->wallsB[i].display();
-*/
 	this->player->display();
-//	for (int i = 0; i < NB_ENEMIES ; ++i)
-//		this->enemies[i].loop();
+	p_missiles = this->player->getMissiles();
+
+	for (int i = 0; i < MAX_MISSILES_IN_SLOT ; i++) {
+		if (p_missiles[i].activated)
+			p_missiles[i].display();
+	}
+
+	for (int i = 0; i < NB_ENEMIES ; i++) {
+		this->enemies[i].display();
+		e_missiles = this->enemies[i].getMissiles();
+		for (int j = 0; j < ENEMIES_MISSILES ; j++) {
+			if (e_missiles[j].activated)
+				e_missiles[j].display();
+		}
+	}
 	refresh();
+}
+
+void		Game::activateEnemies( void ) {
+	for (int i = 0; i < NB_ENEMIES ; i++) {
+		if (this->enemies[i].activated == false && std::rand() % 4 == 2)
+			this->enemies[i].activated = true;
+	}
 }
 
 bool 		Game::isStop(void) {

@@ -14,7 +14,7 @@ class Entity {
 
 		void				loop( void );
 		void				display( void );
-		bool				checkColision( void );
+		void				checkColision( void );
 		void				init( int x1, int x2, int y1, int y2, int life, char dispChar);
 		void				init( int x, int y, int life, std::string file);
 

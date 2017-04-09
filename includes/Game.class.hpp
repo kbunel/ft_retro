@@ -7,18 +7,13 @@
 #include "Map.class.hpp"
 #include "Enemy.class.hpp"
 
-#define MAX_SHIP_ENEMY 10
-
-#define SIZE_INTERFACE 5
-
-#define FPS 60
-
 class Game {
 
 	private:
 
-		void 		initWall();
-		void 		initEnemies();
+		void 		initWall( void );
+		void 		initEnemies( void );
+		void		activateEnemies( void );
 
 		int usq;
 		bool 		stop;
