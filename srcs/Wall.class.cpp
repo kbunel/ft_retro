@@ -25,7 +25,7 @@ void Wall::init(int x, bool haut)
 	if (haut)
 		Entity::init(x, x, 0, 3, 99999, '#');
 	else
-		Entity::init(x, x, Game::height - SIZE_INTERFACE-3, Game::height - SIZE_INTERFACE, 99999, '#');		
+		Entity::init(x, x, Game::height - SIZE_INTERFACE-3, Game::height - SIZE_INTERFACE, 99999, '#');
 	this->haut = haut;
 }
 

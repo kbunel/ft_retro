@@ -7,6 +7,7 @@
 #include "Map.class.hpp"
 #include "Enemy.class.hpp"
 #include "Console.class.hpp"
+#include "Asteroid.class.hpp"
 
 class Game {
 
@@ -15,16 +16,19 @@ class Game {
 		void 		initWall( void );
 		void 		initEnemies( void );
 		void 		initCarte( void );
+		void 		initAsteroids( void );
 		void		activateEnemies( void );
 		void		clear( void );
-
 		int 		enemiesFrequency;
 		int 		usq;
 		int			ust;
 		int			frame;
 		bool 		stop;
+		bool 		running;
+		bool		pause;
 		Player* 	player;
 		Enemy 		*enemies;
+		Asteroid 	*asteroids;
 		Wall 		*wallsH;
 		Wall 		*wallsB;
 
@@ -36,11 +40,13 @@ class Game {
 
 		void 		input();
 		void 		loop();
-		void 		aff( void );
+		void 		run();
+		void 		aff();
 		int 		getWidth();
 		int 		getHeight();
-		bool 		isStop();
-
+		bool 		isRunning();
+		bool 		isPause();
+		void		setPause(bool p);
 		static void error(std::string err);
 
 		static int 					width;

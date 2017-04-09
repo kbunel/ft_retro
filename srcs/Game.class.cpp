@@ -11,22 +11,8 @@ Console*			Game::console = new Console;
 bool**				Game::carte;
 
 Game::Game(void) {
-	initscr();
-	cbreak();
-	noecho();
-	keypad(stdscr, TRUE);
-	timeout(0);
-	curs_set(0);
-	this->stop = false;
-	ust = 0;
-	usq = 0;
-	enemiesFrequency = 700;
-	getmaxyx(stdscr, Game::height, Game::width);
-	Game::map = new Map();
-	initCarte();
-	initWall();
-	initEnemies();
-	this->player = new Player();
+	this->running = false;
+	this->pause = true;
 }
 
 Game::Game(Game const & src)
@@ -40,13 +26,27 @@ Game::~Game()
 	delete [] this->wallsB;
 	delete this->player;
 	delete Game::map;
-	endwin();
 }
 
 Game & 		Game::operator=(Game const & rhs)
 {
   (void)rhs;
   return *this;
+}
+
+void		Game::run()
+{
+	this->running = true;
+	usq = 0;
+	ust = 0;
+	this->enemiesFrequency = MIN_ENEMIES_FREQUENCY;
+	Game::map = new Map();
+	initWall();
+	initEnemies();
+	initAsteroids();
+	initCarte();
+	this->player = new Player();
+	this->pause = false;
 }
 
 void 		Game::initWall( void )
@@ -75,7 +75,6 @@ void		Game::initCarte( void ) {
 		Game::carte[i] = new bool[Game::height];
 		while (j < Game::height) {
 			Game::carte[i][j] = new bool(false);
-			//std::cout << Game::carte[i][j] << std::endl;
 			j++;
 		}
 		i++;
@@ -96,12 +95,20 @@ void 		Game::initEnemies( void )
 	}
 }
 
+void 		Game::initAsteroids( void )
+{
+	this->asteroids = new Asteroid[NB_ASTEROIDS];
+	for (int i = 0; i < NB_ASTEROIDS; ++i) {
+		asteroids[i].init(Game::width + 10, 0, 1, "Asteroids.file" );
+	}
+}
+
 void 		Game::input( void )
 {
 	int ch = wgetch(stdscr);
 
 	if (ch == 27)
-		this->stop = true;
+		this->pause = true;
 	else if (ch == KEY_UP)
 		this->player->moveUp();
 	else if(ch == KEY_RIGHT)
@@ -117,11 +124,11 @@ void 		Game::input( void )
 void 		Game::loop(void) {
 	std::clock_t		start;
     double 				duration;
-
+    int					asteroid_activated = 0;
     start = std::clock();
-	input(); 
 	aff();
-	
+
+	input();
 	this->activateEnemies();	
 	this->player->loop();
 
@@ -137,8 +144,6 @@ void 		Game::loop(void) {
 			wallsB[i-1].loop(wallsB[i]);
 		wallsB[Game::width-1].generate(wallsB[Game::width-2]);
 	}
-	usq = (usq == 4) ? 0 : usq + 1;
-	ust = (ust == 3) ? 0 : ust + 1;
 	frame++;
 	if (frame > MIN_ENEMIES_FREQUENCY * 2) {
 		this->enemiesFrequency -= 25;
@@ -147,6 +152,19 @@ void 		Game::loop(void) {
 	}
 	Game::console->loop( this->player->getLife() );
 
+	usq = (usq == 4) ? 0 : usq + 1;
+	ust = (ust == 3) ? 0 : ust + 1;
+	for (int i = 0; i < NB_ASTEROIDS; ++i)
+	{
+		if (asteroid_activated == 0 && !this->asteroids[i].isActivated())
+		{
+			this->asteroids[i].repop();
+			asteroid_activated = 8;
+			break;
+		}
+		this->asteroids[i].loop();
+	}
+	asteroid_activated--;
 	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 	while (duration <= (double) 1 / FPS)
 		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
@@ -189,6 +207,9 @@ void 		Game::aff( void ) {
 		}
 	}
 
+	for (int i = 0; i < NB_ASTEROIDS; ++i)
+			this->asteroids[i].display();
+
 	for (int i = 0; i < NB_ENEMIES ; i++) {
 		this->enemies[i].display();
 		e_missiles = this->enemies[i].getMissiles();
@@ -211,8 +232,16 @@ void		Game::activateEnemies( void ) {
 	}
 }
 
-bool 		Game::isStop(void) {
-	return stop;
+bool 		Game::isRunning(void) {
+	return this->running;
+}
+
+bool		Game::isPause(void) {
+	return this->pause;
+}
+
+void 		Game::setPause(bool p) {
+	this->pause = p;
 }
 
 void Game::error(std::string err)
