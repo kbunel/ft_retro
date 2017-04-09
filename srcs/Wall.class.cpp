@@ -54,7 +54,7 @@ void Wall::display()
 {
 	int			i = 0;
 	int			j;
-	Game::map->addReference(*this, "X");
+	Game::map->addReference(*this, NULL);
 	while (i <= x2 - x1) {
 		j = 0;
 		while (j <= y2 - y1) {
@@ -66,5 +66,5 @@ void Wall::display()
 		i++;
 	}
 	this->checkColision();
-	Game::map->addReference(*this, this->address);
+	Game::map->addReference(*this, this);
 }

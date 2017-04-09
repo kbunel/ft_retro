@@ -6,12 +6,12 @@ Map::Map( void ) {
 	int		i = 0;
 	int		j;
 
-	this->map = new std::string*[Game::width];
+	this->map = new Entity**[Game::width];
 	while (i <= Game::width) {
 		j = 0;
-		this->map[i] = new std::string[Game::height];
+		this->map[i] = new Entity*[Game::height];
 		while (j < Game::height)
-			this->map[i][j++] = "X";
+			this->map[i][j++] = NULL;
 		i++;
 	}
 	return;
@@ -32,7 +32,7 @@ Map &			Map::operator=( Map const & rhs ) {
 	return *this;
 }
 
-void			Map::addReference( Entity const & entity, std::string ref ) {
+void			Map::addReference( Entity const & entity, Entity* ref ) {
 	int			i = entity.getX1();
 	int			j;
 

@@ -10,10 +10,10 @@ class Map {
 		Map( Map const & missileInliine );
 		~Map( void );
 
-		void					addReference( Entity const & entity, std::string ref );
+		void					addReference( Entity const & entity, Entity* ref );
 		void					loop( void );
 		
-		std::string				**map;
+		Entity*					**map;
 
 	private:
 

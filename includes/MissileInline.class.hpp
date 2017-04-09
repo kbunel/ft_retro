@@ -3,14 +3,14 @@
 
 #include "../includes/Entity.class.hpp"
 
-class MissileInline : Entity {
+class MissileInline : public Entity {
 
 	public:
 		MissileInline( void );
 		MissileInline( MissileInline const & missileInliine );
 		~MissileInline( void );
 
-		void					loop( void );
+		void					loop( int from );
 		void					initiate( int x, int y );
 
 		bool					activated;
