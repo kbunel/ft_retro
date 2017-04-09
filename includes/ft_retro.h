@@ -5,7 +5,7 @@
 #define ENEMIES_MISSILES 10
 #define NB_ENEMIES 50
 #define SIZE_INTERFACE 5
-#define FPS 60
+#define FPS 30
 
 #include <ncurses.h>
 #include <string>

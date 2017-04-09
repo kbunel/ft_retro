@@ -33,9 +33,7 @@ void 				Enemy::activateMissiles( void ) {
 void				Enemy::loop( void ) {
 	int			i = 0;
 
-	if (this->life <= 0)
-		this->repop();
-	else if (this->activated) {
+	if (this->activated) {
 		this->moveLeft();
 		while (i < ENEMIES_MISSILES)
 			missiles[i++].loop( ENEMY );
@@ -55,7 +53,8 @@ void 				Enemy::moveUp( void ) {
 		this->y1 -= 1;
 		this->y2 -= 1;
 	}
-	this->checkColision();
+	if (this->checkColision())
+		this->repop();
 	Game::map->addReference(*this, this);
 }
 
@@ -67,7 +66,8 @@ void 				Enemy::moveLeft( void ) {
 	else {
 		this->x1 -= 1;
 		this->x2 -= 1;
-		this->checkColision();
+		if (this->checkColision())
+			this->repop();
 		Game::map->addReference(*this, this);
 	}
 }
@@ -78,7 +78,8 @@ void 				Enemy::moveRight( void ) {
 		this->x1 += 1;
 		this->x2 += 1;
 	}
-	this->checkColision();
+	if (this->checkColision())
+		this->repop();
 	Game::map->addReference(*this, this);
 }
 
@@ -88,7 +89,8 @@ void 				Enemy::moveDown( void ) {
 		this->y1 += 1;
 		this->y2 += 1;
 	}
-	this->checkColision();
+	if (this->checkColision())
+		this->repop();
 	Game::map->addReference(*this, this);
 }
 

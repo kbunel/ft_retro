@@ -20,6 +20,8 @@ class Player : public Entity {
 		void 				moveRight( void );
 		void 				moveDown( void );
 		MissileInline*		getMissiles( void );
+		int					getLife( void );
+		void				crushed( void );
 
 	private:
 

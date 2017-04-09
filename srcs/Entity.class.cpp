@@ -1,6 +1,9 @@
 #include "../includes/Entity.class.hpp"
 #include "../includes/Map.class.hpp"
 #include "../includes/Game.class.hpp"
+#include "../includes/MissileInline.class.hpp"
+#include "../includes/Player.class.hpp"
+#include "../includes/Enemy.class.hpp"
 #include <unistd.h>
 
 Entity::Entity( void ) {
@@ -44,21 +47,24 @@ void		Entity::display( void ) {
 	}
 }
 
-void		Entity::checkColision( void ) {
+bool		Entity::checkColision( void ) {
 	int		i = this->x1;
 	int		j;
+	bool	crushed;
 
+	crushed = false;
 	while (i < this->x2 && i >= 0 && i < Game::width) {
 		j = this->y1;
 		while (j < this->y2 && j >= 0 && j < Game::height) {
 			if (Game::map->map[i][j] != NULL && Game::map->map[i][j] != this) {
-				this->life--;
 				Game::map->map[i][j]->life--;
+				crushed = true;
 			}
 			j++;
 		}
 		i++;
 	}
+	return crushed;
 }
 
 void		Entity::init( int x1, int x2, int y1, int y2, int life, char dispChar) {

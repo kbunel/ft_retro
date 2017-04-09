@@ -21,19 +21,19 @@ MissileInline &			MissileInline::operator=( MissileInline const & rhs ) {
 }
 
 void					MissileInline::initiate( int x, int y ) {
-	this->init(x, x, y, y, 1, 'o');
+	this->init(x, x + 3, y, y, 1, '|');
 }
 
 void					MissileInline::loop( int from ) {
-	this->checkColision();
-	if (this->life == 0)
+	if (this->checkColision() == true || this->life <= 0)
 		this->activated = false;
 	Game::map->addReference(*this, NULL);
 	if (from == PLAYER) {
 		if (this->x1 <= Game::width && this->activated) {
 			this->x1++;
 			this->x2++;
-			this->checkColision();
+			if (this->checkColision())
+				this->activated = false;
 			Game::map->addReference(*this, this);
 		}
 		else
@@ -43,7 +43,8 @@ void					MissileInline::loop( int from ) {
 		if (this->x2 > 0 && this->activated) {
 			this->x1++;
 			this->x2++;
-			this->checkColision();
+			if (this->checkColision())
+				this->activated = false;
 			Game::map->addReference(*this, this);
 		}
 		else

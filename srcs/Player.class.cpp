@@ -32,6 +32,21 @@ void				Player::loop( void ) {
 
 	while (i < MAX_MISSILES_IN_SLOT)
 			missiles[i++].loop( PLAYER );
+	if (this->life <= 0)
+		exit(1);
+}
+
+void				Player::crushed( void ) {
+	int				largeur;
+	int				hauteur;
+
+	largeur = x2 - x1;
+	hauteur = y2 - y1;
+	this->life--;
+	this->x1 = 3;
+	this->x2 = x1 + largeur;
+	this->y1 = Game::height / 2 - 1;
+	this->y2 = y1 + hauteur;
 }
 
 void 				Player::moveUp( void ) {
@@ -40,7 +55,8 @@ void 				Player::moveUp( void ) {
 		this->y1 -= 1;
 		this->y2 -= 1;
 	}
-	this->checkColision();
+	if (this->checkColision())
+		this->crushed();
 	Game::map->addReference(*this, this);
 }
 
@@ -50,7 +66,8 @@ void 				Player::moveLeft( void ) {
 		this->x1 -= 1;
 		this->x2 -= 1;
 	}
-	this->checkColision();
+	if (this->checkColision())
+		this->crushed();
 	Game::map->addReference(*this, this);
 }
 
@@ -60,7 +77,8 @@ void 				Player::moveRight( void ) {
 		this->x1 += 1;
 		this->x2 += 1;
 	}
-	this->checkColision();
+	if (this->checkColision())
+		this->crushed();
 	Game::map->addReference(*this, this);
 }
 
@@ -81,4 +99,8 @@ MissileInline*		Player::getMissiles( void ) {
 Player &			Player::operator=( Player const & rhs ) {
 	this->init(rhs.x1, rhs.x2, rhs.y1, rhs.y2, rhs.life, 'D');
 	return *this;
+}
+
+int					Player::getLife( void ) {
+	return this->life;
 }
