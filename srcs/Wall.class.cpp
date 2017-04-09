@@ -30,15 +30,19 @@ void Wall::init(int x, bool haut)
 
 void Wall::loop(Wall const & w)
 {
+	if (this->checkColision())
+		Game::error("qwef");
 	Game::map->addReference(*this, NULL);
 	this->y1 = w.getY1();
 	this->y2 = w.getY2();
+	this->checkColision();
 	Entity::generateDispChars('#');
 	Game::map->addReference(*this, this);
 }
 
 void Wall::generate(Wall const & w)
 {
+	this->checkColision();
 	if (haut)
 	{
 		int rand = std::rand() % 3;
@@ -73,5 +77,6 @@ void Wall::generate(Wall const & w)
 		else
 			this->y1 = w.getY1();		
 	}
+	this->checkColision();
 	Entity::generateDispChars(' ');
 }

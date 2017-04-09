@@ -184,8 +184,10 @@ void 		Game::aff(void) {
 
 void		Game::activateEnemies( void ) {
 	for (int i = 0; i < NB_ENEMIES ; i++) {
-		if (this->enemies[i].activated == false && std::rand() % 4 == 2)
+		if (this->enemies[i].activated == false && std::rand() % 4 == 2) {
 			this->enemies[i].activated = true;
+			break;
+		}
 	}
 }
 

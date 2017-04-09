@@ -33,7 +33,7 @@ void				Player::loop( void ) {
 	while (i < MAX_MISSILES_IN_SLOT)
 			missiles[i++].loop( PLAYER );
 	if (this->life <= 0)
-		exit(1);
+		Game::error("GAME OVER");
 }
 
 void				Player::crushed( void ) {
@@ -88,7 +88,8 @@ void 				Player::moveDown( void ) {
 		this->y1 += 1;
 		this->y2 += 1;
 	}
-	this->checkColision();
+	if (this->checkColision())
+		this->crushed();
 	Game::map->addReference(*this, this);
 }
 

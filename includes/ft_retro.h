@@ -3,7 +3,7 @@
 
 #define MAX_MISSILES_IN_SLOT 50
 #define ENEMIES_MISSILES 10
-#define NB_ENEMIES 10
+#define NB_ENEMIES 50
 #define SIZE_INTERFACE 5
 #define FPS 120
 

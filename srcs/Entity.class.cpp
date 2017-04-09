@@ -53,9 +53,9 @@ bool		Entity::checkColision( void ) {
 	bool	crushed;
 
 	crushed = false;
-	while (i < this->x2 && i >= 0 && i < Game::width) {
+	while (i <= this->x2 && i >= 0 && i < Game::width) {
 		j = this->y1;
-		while (j < this->y2 && j >= 0 && j < Game::height) {
+		while (j <= this->y2 && j >= 0 && j < Game::height) {
 			if (Game::map->map[i][j] != NULL && Game::map->map[i][j] != this) {
 				Game::map->map[i][j]->life--;
 				crushed = true;
