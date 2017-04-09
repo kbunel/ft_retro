@@ -13,7 +13,7 @@ class Game {
 
 		void 		initWall( void );
 		void 		initEnemies( void );
-		void		activateEnemies( void ) {
+		void		activateEnemies( void );
 
 		int usq;
 		bool 		stop;

@@ -52,8 +52,12 @@ void 		Game::initWall( void )
 
 void 		Game::initEnemies( void )
 {
+	int		y;
 	this->enemies = new Enemy[NB_ENEMIES];
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i < NB_ENEMIES; ++i) {
+		y = std::rand() % 4;
+		y *= (y % 2 == 0) ? 1 : -1; 
+		y = (Game::height / 2 ) + y ;
 		enemies[i].init(Game::width + 10, y,  1, "enemy.file" );
 	}
 }
