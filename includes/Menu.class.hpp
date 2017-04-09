@@ -24,6 +24,7 @@ public:
 		void input(Game & g);
 		void affTitle();
 		void affPause();
+		void affGameOver();
 		void aff(Game & g);
 
 		bool isStop();

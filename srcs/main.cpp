@@ -18,7 +18,7 @@ int			main() {
 //	g.run();
 	while (!m.isStop())
 	{
-		if (g.isPause())
+		if (g.isPause() || !g.isRunning())
 			m.loop(g);
 		else
 			g.loop();

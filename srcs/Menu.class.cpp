@@ -32,8 +32,6 @@ void 		Menu::input(Game & g)
 	else if (ch == '1')
 		g.run();
 	else if (ch == '2')
-	{}
-	else if (ch == '3')
 		this->stop = true;
 }
 
@@ -63,18 +61,20 @@ void Menu::aff(Game & g)
 {
 	std::string str[3];
 	str[0] = "1. Lancer le jeu.";
-	str[1] = "2. High score.";
-	str[2] = "3. Quiter.";
+	str[1] = "2. Quiter.";
 	clear();
 	for (int i = 0; i < NB_MENUSTAR; ++i)
 		menuStar[i].loop();
 	for (int i = 0; i < 3; ++i)
 		mvprintw((Game::height/2-20+(2*i)), Game::width/2-20, str[i].c_str());
-	if (!g.isRunning())
+	mvprintw(Game::height/2-20+6, Game::width/2-20, "Score: %d", g.getScore());
+	if (!g.isRunning() && g.getScore() == 0)
 		this->affTitle();
 	else if (g.isRunning() && g.isPause())
 		this->affPause();
-	refresh();	
+	else if (!g.isRunning() && g.getScore() != 0)
+		this->affGameOver();
+	refresh();
 }
 
 void Menu::affTitle()
@@ -120,27 +120,22 @@ void Menu::affPause()
 	mvprintw(Game::height/2+i, Game::width/2+j, "|__|  |__|__| \\__,_| \\___||_____|");
 }
 
-
-                                 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void Menu::affGameOver()
+{
+	int i = -30;
+	int j = -40;
+	mvprintw(Game::height/2+i, Game::width/2+j, "   _____                         ____                 ");
+	i++;
+	mvprintw(Game::height/2+i, Game::width/2+j, "  / ____|                       / __ \\                ");
+	i++;
+	mvprintw(Game::height/2+i, Game::width/2+j, " | |  __  __ _ _ __ ___   ___  | |  | |_   _____ _ __ ");
+	i++;
+	mvprintw(Game::height/2+i, Game::width/2+j, " | | |_ |/ _` | '_ ` _ \\ / _ \\ | |  | \\ \\ / / _ \\ '__|");
+	i++;
+	mvprintw(Game::height/2+i, Game::width/2+j, " | |__| | (_| | | | | | |  __/ | |__| |\\ V /  __/ |   ");
+	i++;
+	mvprintw(Game::height/2+i, Game::width/2+j, "  \\_____|\\__,_|_| |_| |_|\\___|  \\____/  \\_/ \\___|_|   ");
+}
 
 
 bool Menu::isStop() {
