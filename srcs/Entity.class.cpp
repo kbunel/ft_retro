@@ -82,21 +82,13 @@ void		Entity::init( int x, int y, int life, std::string file) {
 		{
 			this->y2++;
 			this->x2 = x + std::strlen(line.c_str());
-//			mvprintw(10 ,10, "x2= %d + %d = %d", y, std::strlen(line.c_str()), y + std::strlen(line.c_str()));
-//			mvprintw(11 ,11, "y2 = %d", this->y2);
-//			refresh();
-//			sleep(1);
 		}
 		fichier.close();
 	}
+	this->y2 -= 1;
 	int i = 0;
 	int j;
  	std::ifstream fichier2(file, std::ios::in);
-//	sleep(2);
-//	clear();
-//	mvprintw(10, 10, "%d:%d", this->x2 - this->x1, this->y2 - this->y1);
-//	refresh();
-//	sleep(2);
 	if (fichier2)
 	{
 		this->dispChars = new std::string*[this->x2 - this->x1 + 1];
@@ -114,7 +106,6 @@ void		Entity::init( int x, int y, int life, std::string file) {
 		fichier2.close();
 	}
 	this->life	 	= life;
-//	sleep(3);
 }
 
 void Entity::generateDispChars(char dispChar)
