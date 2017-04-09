@@ -2,8 +2,9 @@
 #include "../includes/Wall.class.hpp"
 #include "../includes/Game.class.hpp"
 #include <unistd.h>
-Wall::Wall()
-{}
+Wall::Wall( void ) {
+	this->type = WALL;
+}
 
 Wall::Wall(Wall const & src)
 {
@@ -30,8 +31,7 @@ void Wall::init(int x, bool haut)
 
 void Wall::loop(Wall const & w)
 {
-	if (this->checkColision())
-		Game::error("qwef");
+	this->checkColision();
 	Game::map->addReference(*this, NULL);
 	this->y1 = w.getY1();
 	this->y2 = w.getY2();

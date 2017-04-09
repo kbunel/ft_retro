@@ -6,6 +6,9 @@
 Enemy::Enemy( void ) {
 	this->init(30, Game::height / 2, 1, "enemy.file" );
 	this->activated = false;
+	this->type = ENEMY;
+	for (int i = 0; i < ENEMIES_MISSILES; i++)
+		this->missiles[i].setType(MISSILE_ENEMY);
 	return;
 }
 
@@ -20,7 +23,7 @@ Enemy::~Enemy( void ) {
 
 void 				Enemy::activateMissiles( void ) {
 	int			i = 0;
-	while (i < MAX_MISSILES_IN_SLOT) {
+	while (i < ENEMIES_MISSILES) {
 		if (this->missiles[i].activated == false) {
 			this->missiles[i].activated = true;
 			this->missiles[i].initiate(this->x2 + 3, this->y1 + ((this->y2 - this->y1) / 2));
@@ -30,11 +33,14 @@ void 				Enemy::activateMissiles( void ) {
 	}
 }
 
-void				Enemy::loop( void ) {
+void				Enemy::loop( int ust ) {
 	int			i = 0;
 
+	if (this->life <= 0)
+		this->repop();
 	if (this->activated) {
-		this->moveLeft();
+		if (!ust)
+			this->moveLeft();
 		while (i < ENEMIES_MISSILES)
 			missiles[i++].loop( ENEMY );
 	}
@@ -99,6 +105,6 @@ MissileInline*		Enemy::getMissiles( void ) {
 }
 
 Enemy &				Enemy::operator=( Enemy const & rhs ) {
-	this->init(rhs.x1, rhs.x2, rhs.y1, rhs.y2, rhs.life, 'D');
+	(void)rhs;
 	return *this;
 }

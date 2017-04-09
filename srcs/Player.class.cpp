@@ -2,7 +2,11 @@
 #include "../includes/Game.class.hpp"
 
 Player::Player( void ) {
-	this->init(3, Game::height / 2 - 1, 3, "test.file" );
+	this->init(3, Game::height / 2 - 1, LIFE_START, "test.file" );
+	this->type = PLAYER;
+	for (int i = 0; i < MAX_MISSILES_IN_SLOT; i++)
+		this->missiles[i].setType(MISSILE_PLAYER);
+	Game::map->addReference(*this, this);
 	return;
 }
 

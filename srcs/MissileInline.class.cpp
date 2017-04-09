@@ -21,33 +21,35 @@ MissileInline &			MissileInline::operator=( MissileInline const & rhs ) {
 }
 
 void					MissileInline::initiate( int x, int y ) {
-	this->init(x, x + 3, y, y, 1, '|');
+	this->init(x, x + 3, y, y, 1, '*');
 }
 
 void					MissileInline::loop( int from ) {
+	Game::map->addReference(*this, NULL);
 	if (this->checkColision() == true || this->life <= 0)
 		this->activated = false;
-	Game::map->addReference(*this, NULL);
-	if (from == PLAYER) {
-		if (this->x1 <= Game::width && this->activated) {
-			this->x1++;
-			this->x2++;
-			if (this->checkColision())
+	else {
+		if (from == PLAYER) {
+			if (this->x1 <= Game::width && this->activated) {
+				this->x1++;
+				this->x2++;
+				if (this->checkColision())
+					this->activated = false;
+				Game::map->addReference(*this, this);
+			}
+			else
 				this->activated = false;
-			Game::map->addReference(*this, this);
 		}
-		else
-			this->activated = false;
-	}
-	else if (from == ENEMY ) {
-		if (this->x2 > 0 && this->activated) {
-			this->x1++;
-			this->x2++;
-			if (this->checkColision())
+		else if (from == ENEMY ) {
+			if (this->x2 > 0 && this->activated) {
+				this->x1++;
+				this->x2++;
+				if (this->checkColision())
+					this->activated = false;
+				Game::map->addReference(*this, this);
+			}
+			else
 				this->activated = false;
-			Game::map->addReference(*this, this);
 		}
-		else
-			this->activated = false;
 	}
 }

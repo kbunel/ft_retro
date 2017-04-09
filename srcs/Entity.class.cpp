@@ -7,21 +7,13 @@
 #include <unistd.h>
 
 Entity::Entity( void ) {
-	std::stringstream  	address;
-
-	address << this;
 	this->init(-1, -1, -1, -1, 0, ' ');
-	this->address = address.str();
 	Game::map->addReference(*this, this);
 	return;
 }
 
 Entity::Entity( int x1, int x2, int y1, int y2, int life, char dispChar ) {
-	std::stringstream  	address;
-
-	address << this;
 	this->init(x1, x2, y1, y2, life, dispChar);
-	this->address = address.str();
 	return;
 }
 
@@ -33,14 +25,29 @@ void		Entity::loop( void ) {
 	
 }
 
+void		Entity::clear( void ) {
+	int			i = 0;
+	int			j;
+
+	while (i <= y2 - y1) {
+		j = 0;
+		while (j <= x2 - x1) {
+			mvprintw( this->y1 + i, this->x1 + j, " " );
+			j++;
+		}
+		i++;
+	}
+}
+
 void		Entity::display( void ) {
 	int			i = 0;
 	int			j;
-		
+
 	while (i <= y2 - y1) {
 		j = 0;
 		while (j <= x2 - x1) {
 			mvprintw( this->y1 + i, this->x1 + j, this->dispChars[i][j].c_str() );
+			Game::carte[i][j] = true;
 			j++;
 		}
 		i++;
@@ -56,9 +63,16 @@ bool		Entity::checkColision( void ) {
 	while (i <= this->x2 && i >= 0 && i < Game::width) {
 		j = this->y1;
 		while (j <= this->y2 && j >= 0 && j < Game::height) {
-			if (Game::map->map[i][j] != NULL && Game::map->map[i][j] != this) {
+			if (Game::map->map[i][j] != NULL
+					&& Game::map->map[i][j] != this
+					&& Game::map->map[i][j]->getType() != this->getType()) {
 				Game::map->map[i][j]->life--;
 				crushed = true;
+				if ((Game::map->map[i][j]->getType() == MISSILE_PLAYER
+						&& this->getType() == ENEMY)
+						|| (Game::map->map[i][j]->getType() == ENEMY
+						&& this->getType() == MISSILE_PLAYER))
+					Game::console->addScore(10);
 			}
 			j++;
 		}
@@ -125,8 +139,7 @@ void		Entity::init( int x, int y, int life, std::string file) {
 }
 
 
-void Entity::generateDispChars(char dispChar)
-{
+void Entity::generateDispChars(char dispChar) {
 	int				i = 0;
 	int				j;
 
@@ -140,6 +153,14 @@ void Entity::generateDispChars(char dispChar)
 		}
 		i++;
 	}	
+}
+
+void		Entity::setType( int type ) {
+	this->type = type;
+}
+
+int			Entity::getType( void ) const {
+	return this->type;
 }
 
 int			Entity::getLife( void ) const {
