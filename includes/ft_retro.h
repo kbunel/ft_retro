@@ -3,9 +3,9 @@
 
 #define MAX_MISSILES_IN_SLOT 50
 #define ENEMIES_MISSILES 10
-#define NB_ENEMIES 50
+#define NB_ENEMIES 10
 #define SIZE_INTERFACE 5
-#define FPS 30
+#define FPS 120
 
 #include <ncurses.h>
 #include <string>

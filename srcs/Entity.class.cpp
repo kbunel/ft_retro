@@ -37,10 +37,10 @@ void		Entity::display( void ) {
 	int			i = 0;
 	int			j;
 		
-	while (i <= x2 - x1) {
+	while (i <= y2 - y1) {
 		j = 0;
-		while (j <= y2 - y1) {
-			mvprintw( this->y1 + j, this->x1 + i, this->dispChars[i][j].c_str() );
+		while (j <= x2 - x1) {
+			mvprintw( this->y1 + i, this->x1 + j, this->dispChars[i][j].c_str() );
 			j++;
 		}
 		i++;
@@ -79,32 +79,41 @@ void		Entity::init( int x1, int x2, int y1, int y2, int life, char dispChar) {
 void		Entity::init( int x, int y, int life, std::string file) {
 	std::ifstream fichier(file, std::ios::in);
 
+	int size_x = 0;
+	int size_y = 0;
 	this->x1 = x;
 	this->y1 = y;
 	this->y2 = y;
+	this->x2 = 0;
+
 	if (fichier)
 	{
 		std::string line;
 		while (std::getline(fichier, line))
 		{
-			this->y2++;
-			this->x2 = x + std::strlen(line.c_str());
+			size_y++;
+			if (size_x != 0 && size_x != (int)(x + std::strlen(line.c_str())))
+			{
+				Game::error("Erreur de format d'un fichier d'entitee");
+			}
+			size_x = x + std::strlen(line.c_str());
 		}
 		fichier.close();
 	}
-	this->y2 -= 1;
+	this->y2 = this->y1 + size_y - 1;
+	this->x2 = size_x - 1;
 	int i = 0;
 	int j;
  	std::ifstream fichier2(file, std::ios::in);
 	if (fichier2)
 	{
-		this->dispChars = new std::string*[this->x2 - this->x1 + 1];
+		this->dispChars = new std::string*[this->y2 - this->y1 + 1];
 		std::string line;
 		while (std::getline(fichier2, line))
 		{
 			j = 0;
-			dispChars[i] = new std::string[this->y2 - this->y1+1];
-			while (j <= this->y2 - this->y1) {
+			dispChars[i] = new std::string[this->x2 - this->x1 + 1];
+			while (j <= this->x2 - this->x1 + 1) {
 				dispChars[i][j] = line[j];
 			    j++;
 			}
@@ -115,16 +124,17 @@ void		Entity::init( int x, int y, int life, std::string file) {
 	this->life	 	= life;
 }
 
+
 void Entity::generateDispChars(char dispChar)
 {
 	int				i = 0;
 	int				j;
 
-	this->dispChars = new std::string*[this->x2 - this->x1 + 1];
-	while (i <= this->x2 - this->x1) {
+	this->dispChars = new std::string*[this->y2 - this->y1 + 1];
+	while (i <= this->y2 - this->y1) {
 		j = 0;
-		dispChars[i] = new std::string[this->y2 - this->y1 + 1];
-		while (j <= this->y2 - this->y1) {
+		dispChars[i] = new std::string[this->x2 - this->x1 + 1];
+		while (j <= this->x2 - this->x1) {
 			dispChars[i][j] = dispChar;
 			j++;
 		}
