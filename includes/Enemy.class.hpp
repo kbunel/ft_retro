@@ -13,7 +13,7 @@ class Enemy : public Entity {
 		Enemy( const Enemy & enemy);
 		~Enemy( void );
 
-		void				loop( void );
+		void				loop( int ust );
 		void 				activateMissiles( void );
 		void				repop( void );
 		void 				moveUp( void );

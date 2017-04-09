@@ -2,7 +2,11 @@
 #include "../includes/Game.class.hpp"
 
 Player::Player( void ) {
-	this->init(3, Game::height / 2 - 1, 3, "test.file" );
+	this->init(3, Game::height / 2 - 1, LIFE_START, "test.file" );
+	this->type = PLAYER;
+	for (int i = 0; i < MAX_MISSILES_IN_SLOT; i++)
+		this->missiles[i].setType(MISSILE_PLAYER);
+	Game::map->addReference(*this, this);
 	return;
 }
 
@@ -27,13 +31,14 @@ void 				Player::activateMissiles( void ) {
 	}
 }
 
-void				Player::loop( void ) {
+bool				Player::loop( void ) {
 	int			i = 0;
 
 	while (i < MAX_MISSILES_IN_SLOT)
 			missiles[i++].loop( PLAYER );
 	if (this->life <= 0)
-		Game::error("GAME OVER");
+		return false;
+	return true;
 }
 
 void				Player::crushed( void ) {

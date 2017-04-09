@@ -8,6 +8,8 @@
 #define NB_MENUSTAR 400
 #define SIZE_INTERFACE 5
 #define FPS 120
+#define MIN_ENEMIES_FREQUENCY 700
+#define LIFE_START 3
 
 #include <ncurses.h>
 #include <string>
@@ -17,7 +19,10 @@
 
 enum {
 	PLAYER,
-	ENEMY
+	ENEMY,
+	MISSILE_PLAYER,
+	MISSILE_ENEMY,
+	WALL
 };
 
 #endif

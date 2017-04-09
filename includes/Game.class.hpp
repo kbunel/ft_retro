@@ -6,6 +6,7 @@
 #include "Player.class.hpp"
 #include "Map.class.hpp"
 #include "Enemy.class.hpp"
+#include "Console.class.hpp"
 #include "Asteroid.class.hpp"
 
 class Game {
@@ -14,10 +15,15 @@ class Game {
 
 		void 		initWall( void );
 		void 		initEnemies( void );
+		void 		initCarte( void );
 		void 		initAsteroids( void );
 		void		activateEnemies( void );
-
-		int usq;
+		void		clear( void );
+		int 		enemiesFrequency;
+		int 		usq;
+		int			ust;
+		int			frame;
+		bool 		stop;
 		bool 		running;
 		bool		pause;
 		Player* 	player;
@@ -41,12 +47,19 @@ class Game {
 		bool 		isRunning();
 		bool 		isPause();
 		void		setPause(bool p);
+		void 		endGame();
+		int 		getScore();
+
 		static void error(std::string err);
 
-		static int 			width;
-		static int 			height;
-		static Map*  		map;
+		static int 					width;
+		static int 					height;
+		static Map*  				map;
 		static std::string  		mapChar;
+		static Console*				console;
+		static bool**				carte;
+
+		Player const &				getPlayer( void );
 
 		Game & 		operator=(Game const & src);
 

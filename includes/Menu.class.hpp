@@ -23,7 +23,8 @@ public:
 		void loop(Game & g);
 		void input(Game & g);
 		void affTitle();
-		void aff();
+		void affPause();
+		void aff(Game & g);
 
 		bool isStop();
 };

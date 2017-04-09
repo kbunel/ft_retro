@@ -13,7 +13,7 @@ class Player : public Entity {
 		Player( const Player & player);
 		~Player( void );
 
-		void				loop( void );
+		bool				loop( void );
 		void 				activateMissiles( void );
 		void 				moveUp( void );
 		void 				moveLeft( void );

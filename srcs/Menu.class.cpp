@@ -45,7 +45,6 @@ void Menu::loop(Game & g)
     start = std::clock();
 
 	this->input(g);
-	this->affTitle();
 	for (int i = 0; i < NB_MENUSTAR; ++i)
 	{
 		if (!menuStar[i].isActivated())
@@ -54,13 +53,13 @@ void Menu::loop(Game & g)
 			break;
 		}
 	}
-	this->aff();
+	this->aff(g);
 		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 	while (duration <= (double) 1 / 60)
 		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 }
 
-void Menu::aff()
+void Menu::aff(Game & g)
 {
 	std::string str[3];
 	str[0] = "1. Lancer le jeu.";
@@ -71,7 +70,10 @@ void Menu::aff()
 		menuStar[i].loop();
 	for (int i = 0; i < 3; ++i)
 		mvprintw((Game::height/2-20+(2*i)), Game::width/2-20, str[i].c_str());
-	this->affTitle();
+	if (!g.isRunning())
+		this->affTitle();
+	else if (g.isRunning() && g.isPause())
+		this->affPause();
 	refresh();	
 }
 
@@ -98,6 +100,48 @@ void Menu::affTitle()
 	mvprintw(Game::height/2+i, Game::width/2+j, "   `--'       `--'`------' `--' '--' `------'   `--'   `--' '--'     `-----' ");
 
 }
+
+void Menu::affPause()
+{
+	int i = -30;
+	int j = -28;
+	mvprintw(Game::height/2+i, Game::width/2+j, " ____   ____  __ __  _____   ___ ");
+	i++;
+	mvprintw(Game::height/2+i, Game::width/2+j, "|    \\ /    ||  |  |/ ___/  /  _]");
+	i++;
+	mvprintw(Game::height/2+i, Game::width/2+j, "|  o  )  o  ||  |  (   \\_  /  [_ ");
+	i++;
+	mvprintw(Game::height/2+i, Game::width/2+j, "|   _/|     ||  |  |\\__  ||    _]");
+	i++;
+	mvprintw(Game::height/2+i, Game::width/2+j, "|  |  |  _  ||  :  |/  \\ ||   [_ ");
+	i++;
+	mvprintw(Game::height/2+i, Game::width/2+j, "|  |  |  |  ||     |\\    ||     |");
+	i++;
+	mvprintw(Game::height/2+i, Game::width/2+j, "|__|  |__|__| \\__,_| \\___||_____|");
+}
+
+
+                                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 bool Menu::isStop() {
 	return this->stop;
