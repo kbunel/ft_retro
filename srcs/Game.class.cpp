@@ -9,7 +9,7 @@ std::string  		Game::mapChar = "init";
 
 Game::Game(void) {
 	this->running = false;
-	this->pause = true;
+	this->setPause(true);
 }
 
 Game::Game(Game const & src)
@@ -19,10 +19,13 @@ Game::Game(Game const & src)
 
 Game::~Game()
 {
-	delete [] this->wallsH;
-	delete [] this->wallsB;
-	delete this->player;
-	delete Game::map;
+	if (this->isRunning())
+	{
+		delete [] this->wallsH;
+		delete [] this->wallsB;
+		delete this->player;
+		delete Game::map;
+	}
 }
 
 Game & 		Game::operator=(Game const & rhs)
@@ -40,7 +43,7 @@ void		Game::run()
 	initEnemies();
 	initAsteroids();
 	this->player = new Player();
-	this->pause = false;
+	this->setPause(false);
 }
 
 void 		Game::initWall( void )
@@ -83,7 +86,7 @@ void 		Game::input( void )
 	int ch = wgetch(stdscr);
 
 	if (ch == 27)
-		this->pause = true;
+		this->setPause(true);
 	else if (ch == KEY_UP)
 		this->player->moveUp();
 	else if(ch == KEY_RIGHT)
@@ -199,6 +202,7 @@ bool		Game::isPause(void) {
 }
 
 void 		Game::setPause(bool p) {
+	clear();
 	this->pause = p;
 }
 

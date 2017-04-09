@@ -15,12 +15,12 @@ int			main() {
 	timeout(0);
 	curs_set(0);
 	getmaxyx(stdscr, Game::height, Game::width);
-	g.run();
+//	g.run();
 	while (!m.isStop())
 	{
-//		if (g.isPause())
-//			m.loop(g);
-//		else
+		if (g.isPause())
+			m.loop(g);
+		else
 			g.loop();
 	}
 	endwin();

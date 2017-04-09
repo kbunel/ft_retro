@@ -5,6 +5,7 @@
 #define ENEMIES_MISSILES 10
 #define NB_ENEMIES 50
 #define NB_ASTEROIDS 200
+#define NB_MENUSTAR 400
 #define SIZE_INTERFACE 5
 #define FPS 120
 

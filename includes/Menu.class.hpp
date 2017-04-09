@@ -4,12 +4,15 @@
 
 #include "ft_retro.h"
 #include "Game.class.hpp"
+#include "MenuStar.class.hpp"
+
 class Menu {
 
 private:
 
 	int selected;
 	bool stop;
+	MenuStar *menuStar;
 
 public:
 
@@ -17,9 +20,10 @@ public:
 		Menu(Menu const & game);
 		~Menu();
 		Menu & 		operator=(Menu const & src);
-		void loop(Game g);
-		void input(Game g);
+		void loop(Game & g);
+		void input(Game & g);
 		void affTitle();
+		void aff();
 
 		bool isStop();
 };
