@@ -125,6 +125,7 @@ void 		Game::aff(void) {
 
 
 
+	/*
     mvprintw( 10, 10, this->mapChar.c_str() );
     mvprintw( this->player->getY1(), this->player->getX1() - 2, "-" );
 
@@ -140,6 +141,7 @@ void 		Game::aff(void) {
         }
         i++;
     }
+	*/
 
 	clear();
 
