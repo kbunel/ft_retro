@@ -88,26 +88,13 @@ void 		Game::loop(void) {
 	input(); 
 	aff();
 
-/*
-	mvprintw( 10, 10, this->mapChar.c_str() );
-	mvprintw( this->player->getY1(), this->player->getX1() - 2, "-" );
 
-
-	int i = 0;
-	int j;
-	while (i < this->width) {
-		j = 0;
-		while(j < this->height) {
-			if (Game::map->map[i][j] != "X")
-				mvprintw( j, i, Game::map->map[i][j].c_str() );
-			j++;
-		}
-		i++;
-	}
-*/
 	this->activateEnemies();	
 
 	this->player->loop();
+
+	
+
 	
 	for (int i = 0; i < NB_ENEMIES ; ++i)
 		this->enemies[i].loop();
