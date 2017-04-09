@@ -8,19 +8,8 @@ Map*  				Game::map;
 std::string  		Game::mapChar = "init";
 
 Game::Game(void) {
-	initscr();
-	cbreak();
-	noecho();
-	keypad(stdscr, TRUE);
-	timeout(0);
-	curs_set(0);
-	this->stop = false;
-	usq = 0;
-	getmaxyx(stdscr, Game::height, Game::width);
-	Game::map = new Map();
-	initWall();
-	initEnemies();
-	this->player = new Player();
+	this->running = false;
+	this->pause = true;
 }
 
 Game::Game(Game const & src)
@@ -34,13 +23,24 @@ Game::~Game()
 	delete [] this->wallsB;
 	delete this->player;
 	delete Game::map;
-	endwin();
 }
 
 Game & 		Game::operator=(Game const & rhs)
 {
   (void)rhs;
   return *this;
+}
+
+void		Game::run()
+{
+	this->running = true;
+	usq = 0;
+	Game::map = new Map();
+	initWall();
+	initEnemies();
+	initAsteroids();
+	this->player = new Player();
+	this->pause = false;
 }
 
 void 		Game::initWall( void )
@@ -70,12 +70,20 @@ void 		Game::initEnemies( void )
 	}
 }
 
+void 		Game::initAsteroids( void )
+{
+	this->asteroids = new Asteroid[NB_ASTEROIDS];
+	for (int i = 0; i < NB_ASTEROIDS; ++i) {
+		asteroids[i].init(Game::width + 10, 0, 1, "Asteroids.file" );
+	}
+}
+
 void 		Game::input( void )
 {
 	int ch = wgetch(stdscr);
 
 	if (ch == 27)
-		this->stop = true;
+		this->pause = true;
 	else if (ch == KEY_UP)
 		this->player->moveUp();
 	else if(ch == KEY_RIGHT)
@@ -91,11 +99,11 @@ void 		Game::input( void )
 void 		Game::loop(void) {
 	std::clock_t		start;
     double 				duration;
-
+    int					asteroid_activated = 0;
     start = std::clock();
-	input(); 
 	aff();
 
+	input();
 	this->activateEnemies();	
 	this->player->loop();
 
@@ -118,6 +126,17 @@ void 		Game::loop(void) {
 		usq++;
 		if (usq == 4)
 			usq = 0;
+	for (int i = 0; i < NB_ASTEROIDS; ++i)
+	{
+		if (asteroid_activated == 0 && !this->asteroids[i].isActivated())
+		{
+			this->asteroids[i].repop();
+			asteroid_activated = 8;
+			break;
+		}
+		this->asteroids[i].loop();
+	}
+	asteroid_activated--;
 	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 	while (duration <= (double) 1 / FPS)
 		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
@@ -129,30 +148,7 @@ void 		Game::aff(void) {
 	MissileInline* 		p_missiles;
 	MissileInline* 		e_missiles;
 
-
-
-
-
-	/*
-    mvprintw( 10, 10, this->mapChar.c_str() );
-    mvprintw( this->player->getY1(), this->player->getX1() - 2, "-" );
-
-    int i = 0;
-    int j;
-    while (i < this->width) {
-        j = 0;
-        while(j < this->height) {
-            if (Game::map->map[i][j] != NULL)
-                mvprintw( j, i, "O" );
-                //mvprintw( j, i, Game::map->map[i][j].c_str() );
-            j++;
-        }
-        i++;
-    }
-	*/
-
 	clear();
-
 
 	mvprintw( 10, 10, "Life: ");
 	mvprintw( 10, 17, (std::to_string(this->player->getLife())).c_str());
@@ -170,6 +166,9 @@ void 		Game::aff(void) {
 		if (p_missiles[i].activated)
 			p_missiles[i].display();
 	}
+
+	for (int i = 0; i < NB_ASTEROIDS; ++i)
+			this->asteroids[i].display();
 
 	for (int i = 0; i < NB_ENEMIES ; i++) {
 		this->enemies[i].display();
@@ -191,8 +190,16 @@ void		Game::activateEnemies( void ) {
 	}
 }
 
-bool 		Game::isStop(void) {
-	return stop;
+bool 		Game::isRunning(void) {
+	return this->running;
+}
+
+bool		Game::isPause(void) {
+	return this->pause;
+}
+
+void 		Game::setPause(bool p) {
+	this->pause = p;
 }
 
 void Game::error(std::string err)

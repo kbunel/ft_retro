@@ -24,14 +24,12 @@ void Wall::init(int x, bool haut)
 	if (haut)
 		Entity::init(x, x, 0, 3, 99999, '#');
 	else
-		Entity::init(x, x, Game::height - SIZE_INTERFACE-3, Game::height - SIZE_INTERFACE, 99999, '#');		
+		Entity::init(x, x, Game::height - SIZE_INTERFACE-3, Game::height - SIZE_INTERFACE, 99999, '#');
 	this->haut = haut;
 }
 
 void Wall::loop(Wall const & w)
 {
-	if (this->checkColision())
-		Game::error("qwef");
 	Game::map->addReference(*this, NULL);
 	this->y1 = w.getY1();
 	this->y2 = w.getY2();

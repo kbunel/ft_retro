@@ -68,6 +68,7 @@ bool		Entity::checkColision( void ) {
 }
 
 void		Entity::init( int x1, int x2, int y1, int y2, int life, char dispChar) {
+(void)x1, (void)x2, (void)y1, (void)y2, (void)life, (void)dispChar;
 	this->x1 		= x1;
 	this->x2 		= x2;
 	this->y1 		= y1;
@@ -135,7 +136,7 @@ void Entity::generateDispChars(char dispChar)
 		j = 0;
 		dispChars[i] = new std::string[this->x2 - this->x1 + 1];
 		while (j <= this->x2 - this->x1) {
-			dispChars[i][j] = dispChar;
+			dispChars[i][j] += dispChar;
 			j++;
 		}
 		i++;

@@ -24,6 +24,7 @@ class Entity {
 		int					getY1( void ) const;
 		int					getY2( void ) const;
 		std::string**		getDispChars( void ) const;
+		void 				deleteDispChars();
 		void				generateDispChars(char dispChar);
 		void 				generateRenderDesign(std::string design);
 	protected:

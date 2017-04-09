@@ -6,6 +6,7 @@
 #include "Player.class.hpp"
 #include "Map.class.hpp"
 #include "Enemy.class.hpp"
+#include "Asteroid.class.hpp"
 
 class Game {
 
@@ -13,12 +14,15 @@ class Game {
 
 		void 		initWall( void );
 		void 		initEnemies( void );
+		void 		initAsteroids( void );
 		void		activateEnemies( void );
 
 		int usq;
-		bool 		stop;
+		bool 		running;
+		bool		pause;
 		Player* 	player;
 		Enemy 		*enemies;
+		Asteroid 	*asteroids;
 		Wall 		*wallsH;
 		Wall 		*wallsB;
 
@@ -30,11 +34,13 @@ class Game {
 
 		void 		input();
 		void 		loop();
+		void 		run();
 		void 		aff();
 		int 		getWidth();
 		int 		getHeight();
-		bool 		isStop();
-		
+		bool 		isRunning();
+		bool 		isPause();
+		void		setPause(bool p);
 		static void error(std::string err);
 
 		static int 			width;
